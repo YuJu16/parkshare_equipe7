@@ -4,7 +4,8 @@ services:
     working_dir: /app/backend
     command: >
       sh -lc "
-        pip install --no-cache-dir fastapi uvicorn[standard] &&
+        pip install --no-cache-dir fastapi uvicorn[standard] pandas openpyxl xlrd &&
+        python /app/db/seed_from_data.py &&
         uvicorn main:app --host 0.0.0.0 --port 8000 --reload
       "
     volumes:
