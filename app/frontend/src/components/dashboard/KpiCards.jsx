@@ -2,7 +2,7 @@ import React from 'react';
 import { Target, Car, Building2, Home } from 'lucide-react';
 import { getScoreColorClass } from '../../utils/helpers';
 
-export default function KpiCards({ data }) {
+export default function KpiCards({ data, thresholds = { good: 80, average: 50 } }) {
   // Calculs agrégés avec les données mockées
   const avgScore = data.length > 0 
     ? Math.round(data.reduce((acc, curr) => acc + curr.potentialScore, 0) / data.length)
@@ -18,7 +18,7 @@ export default function KpiCards({ data }) {
     ? Math.round(data.reduce((acc, curr) => acc + curr.collectiveHousingRatio, 0) / data.length)
     : 0;
 
-  const scoreClass = getScoreColorClass(avgScore);
+  const scoreClass = getScoreColorClass(avgScore, thresholds);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

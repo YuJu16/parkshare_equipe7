@@ -3,19 +3,19 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import { Map as MapIcon } from 'lucide-react';
 
-export default function InteractiveMap({ data }) {
+export default function InteractiveMap({ data, thresholds = { good: 80, average: 50 } }) {
   // Custom Icon factory based on score
   const createCustomIcon = (score) => {
     let bgColor;
-    if (score >= 80) bgColor = 'bg-score-good';
-    else if (score >= 50) bgColor = 'bg-score-average';
+    if (score >= thresholds.good) bgColor = 'bg-score-good';
+    else if (score >= thresholds.average) bgColor = 'bg-score-average';
     else bgColor = 'bg-score-bad';
 
     const htmlString = `
       <div class="relative flex items-center justify-center w-8 h-8 group hover:scale-110 transition-transform duration-300">
         <div class="absolute inset-0 rounded-full opacity-20 ${bgColor} animate-pulse"></div>
         <div class="w-4 h-4 rounded-full border-2 border-white shadow-md ${bgColor}"></div>
-        ${score >= 80 ? `<span class="absolute -top-1 -right-1 flex h-3 w-3"><span class="animate-ping absolute inline-flex h-full w-full rounded-full ${bgColor} opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 ${bgColor}"></span></span>` : ''}
+        ${score >= thresholds.good ? `<span class="absolute -top-1 -right-1 flex h-3 w-3"><span class="animate-ping absolute inline-flex h-full w-full rounded-full ${bgColor} opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 ${bgColor}"></span></span>` : ''}
       </div>
     `;
 
