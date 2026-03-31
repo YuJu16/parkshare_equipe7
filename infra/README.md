@@ -1,6 +1,6 @@
 Pour lancer l'app :
 Depuis le dossier racine :
-docker-compose -f infra/docker-compose.yml up
+docker compose -f infra/docker-compose.yml up --build
 
 Vous pourrez ensuite accéder à l'app via :
 Frontend : http://localhost:8443
