@@ -1,0 +1,36 @@
+services:
+  backend:
+    image: python:3.11-slim
+    working_dir: /app/backend
+    command: >
+      sh -lc "
+        pip install --no-cache-dir fastapi uvicorn[standard] &&
+        uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+      "
+    volumes:
+      - ../app:/app
+    environment:
+      DB_PATH: /app/db/parkshare.db
+    ports:
+      - "8000:8000"
+
+  frontend:
+    image: node:20-alpine
+    working_dir: /app/frontend/src
+    command: >
+      sh -lc "
+        npm install &&
+        npm run dev -- --host 0.0.0.0 --port 5173
+      "
+    volumes:
+      - ../app/frontend/src:/app/frontend/src
+      - frontend_node_modules:/app/frontend/src/node_modules
+    environment:
+      VITE_API_URL: http://backend:8000
+    ports:
+      - "8443:5173"
+    depends_on:
+      - backend
+
+volumes:
+  frontend_node_modules:
