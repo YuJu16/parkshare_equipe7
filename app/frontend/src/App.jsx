@@ -14,7 +14,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('overview');
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/scores/top/100')
+    fetch('/api/scores/top/100')
       .then(res => res.json())
       .then(data => {
         const mapped = data.map(item => ({
