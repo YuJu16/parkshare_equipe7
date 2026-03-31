@@ -130,3 +130,41 @@ npm run dev -- --force
 | Carte Interactive | Carte plein écran avec filtres |
 | Opportunités | Tableau complet des zones |
 | Clients / Paramètres | En construction 🚧 |
+
+---
+
+## ⚠️ Bonnes pratiques Git (à lire avant de commit !)
+
+### Ne jamais commiter `venv/` ni `node_modules/`
+
+Ces dossiers contiennent des milliers de fichiers générés automatiquement. Ils sont dans le `.gitignore` — **ne les ajoute jamais au commit.**
+
+Avant chaque `git add .`, vérifie avec :
+```bash
+git status
+```
+
+Si tu vois `app/backend/venv/` ou `app/frontend/src/node_modules/` dans la liste → **stop**, quelque chose ne va pas.
+
+### Toujours pull avant de push
+
+Si le push est refusé (`rejected`), c'est que quelqu'un d'autre a pushé avant toi. Fais toujours :
+```bash
+git pull --rebase origin main
+git push origin main
+```
+
+### Si tu as accidentellement committé `venv/`
+
+```bash
+# 1. Retirer du tracking git (sans supprimer le dossier physique)
+git rm -r --cached app/backend/venv/
+
+# 2. Commiter la suppression
+git add .gitignore
+git commit -m "fix: retire venv du tracking git"
+
+# 3. Puis pull + push normalement
+git pull --rebase origin main
+git push origin main
+```
