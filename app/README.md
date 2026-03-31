@@ -17,27 +17,33 @@ Le projet nécessite de faire tourner **le backend et le frontend en même temps
 ### Étape 1 : Préparation des données
 
 Si la base de données n'est pas encore remplie, ingérer le fichier de données livré par l'équipe Data :
+
+> ⚠️ **Note** : Le script original `seed.py` ne fonctionne pas (il attend des fichiers CSV qui n'existent pas et un `schema.sql` vide). Utiliser à la place `seed_from_data.py` qui lit directement le fichier `.xls` :
+
 ```bash
 cd app/db
-python seed.py
+python3 seed_from_data.py
 ```
 
 ⚠️ **Fichier attendu** : `data/delivery/parkshare_analyse_potentiel.xls`
 
 Le script va automatiquement :
-- Créer les tables dans la base SQLite
-- Ingérer les données brutes (623 692 lignes)
-- Agréger par commune (18 758 communes)
+- Lire le fichier `.xls` (qui est en réalité un CSV encodé UTF-8 BOM)
+- Créer la table `kpi_scores` dans la base SQLite
+- Ingérer et mapper les colonnes (623 692 lignes)
 - Calculer les scores de potentiel (0-100) avec pondération :
-  - 50% nombre de copropriétés
-  - 30% total lots de stationnement
-  - 20% taux de motorisation
+  - 60% taux de motorisation
+  - 30% nombre de lots de stationnement
+  - 10% population
 
 ### Étape 2 : Lancer le Backend (FastAPI)
+
+> ⚠️ **Note** : Sur Mac, utiliser `pip3` et non `pip` (sinon `command not found`).
+
 ```bash
-pip install fastapi uvicorn pandas openpyxl xlrd
+pip3 install fastapi uvicorn pandas openpyxl xlrd
 cd app/backend
-uvicorn main:app --reload
+python3 -m uvicorn main:app --reload
 ```
 
 ✅ **Backend disponible sur** : `http://127.0.0.1:8000`
@@ -45,7 +51,8 @@ uvicorn main:app --reload
 
 ### Étape 3 : Lancer le Frontend (React + Vite)
 
-⚠️ **ATTENTION** : Le frontend se trouve dans `app/frontend/src/`.
+> ⚠️ **ATTENTION** : Le frontend se trouve dans `app/frontend/src/` (et non `app/frontend/`).
+
 ```bash
 cd app/frontend/src
 npm install --legacy-peer-deps
